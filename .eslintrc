@@ -1,0 +1,42 @@
+{
+  "extends": ["airbnb", "plugin:flowtype/recommended", "prettier"],
+  "parser": "babel-eslint",
+  "plugins": ["flowtype", "prettier", "cypress"],
+  "settings": {
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
+    }
+  },
+  "env": {
+    "cypress/globals": true,
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "prettier/prettier": ["error"],
+    "linebreak-style": 0,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    "no-else-return": [
+      "error",
+      {
+        "allowElseIf": true
+      }
+    ],
+    "react/jsx-one-expression-per-line": ["error", { "allow": "single-child" }],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "!/src/**/*.js",
+          "/src/**/*.test.js",
+          "/src/setupTests.js"
+        ]
+      }
+    ]
+  }
+}
