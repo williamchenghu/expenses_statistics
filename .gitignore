@@ -24,6 +24,9 @@ yarn-error.log*
 node_modules
 
 ### macOS ###
+#iCloud
+*.icloud
+
 # General
 .DS_Store
 .AppleDouble
