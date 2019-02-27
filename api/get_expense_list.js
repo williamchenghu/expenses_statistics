@@ -11,7 +11,7 @@ const expense = () => ({
 });
 
 module.exports = {
-  path: '/api/expense/',
+  path: '/api/expense',
   method: 'GET',
   cache: false,
   template: Array.from({ length: 5 }, () => expense())
