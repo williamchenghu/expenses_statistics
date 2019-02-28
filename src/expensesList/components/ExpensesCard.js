@@ -19,9 +19,9 @@ export const ExpensesCard = ({ expenseDetails, classes }) => {
       <CardContent>
         <div className={classes.title}>{expenseDetails.date}</div>
         <div>
-          <div>{expenseDetails.food}</div>
-          <div>{expenseDetails.living}</div>
-          <div>{expenseDetails.transport}</div>
+          <div>Food: {expenseDetails.food}€</div>
+          <div>Living: {expenseDetails.living}€</div>
+          <div>Transportation: {expenseDetails.transport}€</div>
         </div>
       </CardContent>
     </Card>
