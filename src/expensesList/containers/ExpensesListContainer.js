@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ExpensesCard from '../components/ExpensesCard';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 
 export class ExpensesListContainer extends Component {
@@ -28,6 +30,9 @@ export class ExpensesListContainer extends Component {
             </div>
           );
         })}
+        <Fab color="primary" aria-label="Add">
+          <AddIcon />
+        </Fab>
       </div>
     );
   }
