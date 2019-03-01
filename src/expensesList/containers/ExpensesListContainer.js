@@ -134,11 +134,11 @@ export class ExpensesListContainer extends Component {
         <Modal open={this.state.modalOpen} onClose={this.onCloseModal}>
           <div className={classes.paper}>
             <Typography variant="headline" id="modal-title" className={classes.text}>
-              Title
+              New Expenses
             </Typography>
             <form className={classes.container} noValidate autoComplete="off">
               <TextField
-                id="outlined-textarea"
+                id="food"
                 InputLabelProps={{
                   classes: {
                     root: classes.cssLabel,
@@ -152,8 +152,60 @@ export class ExpensesListContainer extends Component {
                     notchedOutline: classes.notchedOutline
                   }
                 }}
-                label="xxx xxx"
-                placeholder="xxx xxx xxx xxx"
+                label="Food Cost"
+                placeholder="Food, drinks, snacks...you name it."
+                multiline
+                fullWidth
+                className={classes.textField}
+                onChange={input => {
+                  this.setState({ currentFeedback: input.target.value });
+                }}
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                id="living"
+                InputLabelProps={{
+                  classes: {
+                    root: classes.cssLabel,
+                    focused: classes.cssFocused
+                  }
+                }}
+                InputProps={{
+                  classes: {
+                    root: classes.cssOutlinedInput,
+                    focused: classes.cssFocused,
+                    notchedOutline: classes.notchedOutline
+                  }
+                }}
+                label="Living Cost"
+                placeholder="Rent, clothes, glitters...everything counts."
+                multiline
+                fullWidth
+                className={classes.textField}
+                onChange={input => {
+                  this.setState({ currentFeedback: input.target.value });
+                }}
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                id="transportation"
+                InputLabelProps={{
+                  classes: {
+                    root: classes.cssLabel,
+                    focused: classes.cssFocused
+                  }
+                }}
+                InputProps={{
+                  classes: {
+                    root: classes.cssOutlinedInput,
+                    focused: classes.cssFocused,
+                    notchedOutline: classes.notchedOutline
+                  }
+                }}
+                label="Transportation Cost"
+                placeholder="Public, private, gas...those moved you around."
                 multiline
                 fullWidth
                 className={classes.textField}
