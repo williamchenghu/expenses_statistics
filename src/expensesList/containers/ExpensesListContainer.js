@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ExpensesCard from '../components/ExpensesCard';
+import ExpensesCardCmp from '../components/ExpensesCard';
+import DatePickerCmp from '../components/DatePicker';
 import Modal from '@material-ui/core/Modal';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -73,6 +74,10 @@ const styles = theme => ({
       borderColor: theme.palette.secondary.main
     }
   },
+  datePicker: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit
+  },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit
@@ -124,7 +129,7 @@ export class ExpensesListContainer extends Component {
         {expensesList.map(expense => {
           return (
             <div key={expense.id}>
-              <ExpensesCard expenseDetails={expense} />
+              <ExpensesCardCmp expenseDetails={expense} />
             </div>
           );
         })}
@@ -137,6 +142,9 @@ export class ExpensesListContainer extends Component {
               New Expenses
             </Typography>
             <form className={classes.container} noValidate autoComplete="off">
+              <div className={classes.datePicker}>
+                <DatePickerCmp />
+              </div>
               <TextField
                 id="food"
                 InputLabelProps={{
@@ -154,11 +162,10 @@ export class ExpensesListContainer extends Component {
                 }}
                 label="Food Cost"
                 placeholder="Food, drinks, snacks...you name it."
-                multiline
                 fullWidth
                 className={classes.textField}
                 onChange={input => {
-                  this.setState({ currentFeedback: input.target.value });
+                  this.setState({ currentCost: input.target.value });
                 }}
                 margin="normal"
                 variant="outlined"
@@ -180,11 +187,10 @@ export class ExpensesListContainer extends Component {
                 }}
                 label="Living Cost"
                 placeholder="Rent, clothes, glitters...everything counts."
-                multiline
                 fullWidth
                 className={classes.textField}
                 onChange={input => {
-                  this.setState({ currentFeedback: input.target.value });
+                  this.setState({ currentCost: input.target.value });
                 }}
                 margin="normal"
                 variant="outlined"
@@ -206,11 +212,10 @@ export class ExpensesListContainer extends Component {
                 }}
                 label="Transportation Cost"
                 placeholder="Public, private, gas...those moved you around."
-                multiline
                 fullWidth
                 className={classes.textField}
                 onChange={input => {
-                  this.setState({ currentFeedback: input.target.value });
+                  this.setState({ currentCost: input.target.value });
                 }}
                 margin="normal"
                 variant="outlined"
