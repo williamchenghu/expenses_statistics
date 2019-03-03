@@ -6,6 +6,7 @@ import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
+import moment from 'moment';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -100,14 +101,18 @@ export class ExpensesListContainer extends Component {
     super(props);
     this.state = {
       modalOpen: false,
-      expensesList: []
+      expensesList: [],
+      datePick: null,
+      foodCost: undefined,
+      livingCost: undefined,
+      transportCost: undefined
     };
   }
 
   componentDidMount = () => {
     //get the expenses data
     axios.get('/expense').then(res => {
-      // console.log(res);
+      console.log(res);
       this.setState({
         expensesList: res.data
       });
@@ -122,8 +127,29 @@ export class ExpensesListContainer extends Component {
     this.setState({ modalOpen: false });
   };
 
+  onChangeDate = selectedDate => {
+    this.setState({ datePick: selectedDate });
+  };
+
+  //submit the data on modal
+  onSubmitModal = (datePick, foodCost, livingCost, transportCost) => {
+    axios
+      .post('/new/expense', {
+        data: {
+          date: moment(datePick).format('YYYY-MM-DD (ddd)'),
+          food: Number(foodCost),
+          living: Number(livingCost),
+          transport: Number(transportCost)
+        }
+      })
+      .then(newRES => {
+        console.log(newRES);
+        this.onCloseModal();
+      });
+  };
+
   render() {
-    let { expensesList } = this.state;
+    let { expensesList, foodCost, livingCost, transportCost, datePick } = this.state;
     const { classes } = this.props;
     return (
       <div className={classes.text}>
@@ -146,19 +172,21 @@ export class ExpensesListContainer extends Component {
               <MuiPickersUtilsProvider utils={MomentUtils}>
                 <div className={classes.margin}>
                   <DatePickerCmp
-                    InputLabelProps={{
-                      classes: {
-                        root: classes.cssLabel,
-                        focused: classes.cssFocused
-                      }
-                    }}
-                    InputProps={{
-                      classes: {
-                        root: classes.cssOutlinedInput,
-                        focused: classes.cssFocused,
-                        notchedOutline: classes.notchedOutline
-                      }
-                    }}
+                    selectedDate={datePick}
+                    changeDate={this.onChangeDate}
+                    // InputLabelProps={{
+                    //   classes: {
+                    //     root: classes.cssLabel,
+                    //     focused: classes.cssFocused
+                    //   }
+                    // }}
+                    // InputProps={{
+                    //   classes: {
+                    //     root: classes.cssOutlinedInput,
+                    //     focused: classes.cssFocused,
+                    //     notchedOutline: classes.notchedOutline
+                    //   }
+                    // }}
                   />
                 </div>
               </MuiPickersUtilsProvider>
@@ -183,10 +211,11 @@ export class ExpensesListContainer extends Component {
                 fullWidth
                 className={classes.margin}
                 onChange={input => {
-                  this.setState({ currentCost: input.target.value });
+                  this.setState({ foodCost: input.target.value });
                 }}
                 margin="normal"
                 variant="outlined"
+                type="number"
               />
               <TextField
                 id="living"
@@ -209,10 +238,11 @@ export class ExpensesListContainer extends Component {
                 fullWidth
                 className={classes.margin}
                 onChange={input => {
-                  this.setState({ currentCost: input.target.value });
+                  this.setState({ livingCost: input.target.value });
                 }}
                 margin="normal"
                 variant="outlined"
+                type="number"
               />
               <TextField
                 id="transportation"
@@ -235,13 +265,18 @@ export class ExpensesListContainer extends Component {
                 fullWidth
                 className={classes.margin}
                 onChange={input => {
-                  this.setState({ currentCost: input.target.value });
+                  this.setState({ transportCost: input.target.value });
                 }}
                 margin="normal"
                 variant="outlined"
+                type="number"
               />
             </form>
-            <Button variant="contained" className={classes.button}>
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={() => this.onSubmitModal(datePick, foodCost, livingCost, transportCost)}
+            >
               Add
             </Button>
           </div>

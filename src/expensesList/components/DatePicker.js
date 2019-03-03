@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { InlineDatePicker } from 'material-ui-pickers';
 
-const DatePickerCmp = props => {
-  const [selectedDate, handleDateChange] = useState(null);
-
+const DatePickerCmp = ({ selectedDate, changeDate }) => {
   return (
     <InlineDatePicker
       fullWidth
@@ -16,7 +14,7 @@ const DatePickerCmp = props => {
       placeholder="Day/Month/Year"
       format="DD/MM/YYYY"
       value={selectedDate}
-      onChange={handleDateChange}
+      onChange={picked => changeDate(picked)}
       mask={value =>
         // handle clearing outside if value can be changed outside of the component
         value ? [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/] : []
