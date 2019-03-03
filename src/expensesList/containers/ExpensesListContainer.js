@@ -3,6 +3,9 @@ import ExpensesCardCmp from '../components/ExpensesCard';
 import DatePickerCmp from '../components/DatePicker';
 import Modal from '@material-ui/core/Modal';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import MomentUtils from '@date-io/moment';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -74,13 +77,11 @@ const styles = theme => ({
       borderColor: theme.palette.secondary.main
     }
   },
-  datePicker: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
+  margin: {
+    margin: theme.spacing.unit
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
+    flexBasis: 200
   },
   paper: {
     top: '30%',
@@ -142,9 +143,25 @@ export class ExpensesListContainer extends Component {
               New Expenses
             </Typography>
             <form className={classes.container} noValidate autoComplete="off">
-              <div className={classes.datePicker}>
-                <DatePickerCmp />
-              </div>
+              <MuiPickersUtilsProvider utils={MomentUtils}>
+                <div className={classes.margin}>
+                  <DatePickerCmp
+                    InputLabelProps={{
+                      classes: {
+                        root: classes.cssLabel,
+                        focused: classes.cssFocused
+                      }
+                    }}
+                    InputProps={{
+                      classes: {
+                        root: classes.cssOutlinedInput,
+                        focused: classes.cssFocused,
+                        notchedOutline: classes.notchedOutline
+                      }
+                    }}
+                  />
+                </div>
+              </MuiPickersUtilsProvider>
               <TextField
                 id="food"
                 InputLabelProps={{
@@ -158,12 +175,13 @@ export class ExpensesListContainer extends Component {
                     root: classes.cssOutlinedInput,
                     focused: classes.cssFocused,
                     notchedOutline: classes.notchedOutline
-                  }
+                  },
+                  endAdornment: <InputAdornment position="end">€</InputAdornment>
                 }}
                 label="Food Cost"
                 placeholder="Food, drinks, snacks...you name it."
                 fullWidth
-                className={classes.textField}
+                className={classes.margin}
                 onChange={input => {
                   this.setState({ currentCost: input.target.value });
                 }}
@@ -183,12 +201,13 @@ export class ExpensesListContainer extends Component {
                     root: classes.cssOutlinedInput,
                     focused: classes.cssFocused,
                     notchedOutline: classes.notchedOutline
-                  }
+                  },
+                  endAdornment: <InputAdornment position="end">€</InputAdornment>
                 }}
                 label="Living Cost"
                 placeholder="Rent, clothes, glitters...everything counts."
                 fullWidth
-                className={classes.textField}
+                className={classes.margin}
                 onChange={input => {
                   this.setState({ currentCost: input.target.value });
                 }}
@@ -208,12 +227,13 @@ export class ExpensesListContainer extends Component {
                     root: classes.cssOutlinedInput,
                     focused: classes.cssFocused,
                     notchedOutline: classes.notchedOutline
-                  }
+                  },
+                  endAdornment: <InputAdornment position="end">€</InputAdornment>
                 }}
                 label="Transportation Cost"
                 placeholder="Public, private, gas...those moved you around."
                 fullWidth
-                className={classes.textField}
+                className={classes.margin}
                 onChange={input => {
                   this.setState({ currentCost: input.target.value });
                 }}
