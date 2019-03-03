@@ -13,7 +13,7 @@ const styles = {
   }
 };
 
-export const ExpensesCard = ({ expenseDetails, classes }) => {
+export const ExpensesCardCmp = ({ expenseDetails, classes }) => {
   return (
     <Card className={classes.card}>
       <CardContent>
@@ -28,8 +28,8 @@ export const ExpensesCard = ({ expenseDetails, classes }) => {
   );
 };
 
-ExpensesCard.propTypes = {
+ExpensesCardCmp.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ExpensesCard);
+export default withStyles(styles)(ExpensesCardCmp);

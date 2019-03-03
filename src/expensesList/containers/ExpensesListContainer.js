@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import ExpensesCard from '../components/ExpensesCard';
+import ExpensesCardCmp from '../components/ExpensesCard';
+import DatePickerCmp from '../components/DatePicker';
 import Modal from '@material-ui/core/Modal';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import MomentUtils from '@date-io/moment';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -73,9 +77,11 @@ const styles = theme => ({
       borderColor: theme.palette.secondary.main
     }
   },
+  margin: {
+    margin: theme.spacing.unit
+  },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
+    flexBasis: 200
   },
   paper: {
     top: '30%',
@@ -124,7 +130,7 @@ export class ExpensesListContainer extends Component {
         {expensesList.map(expense => {
           return (
             <div key={expense.id}>
-              <ExpensesCard expenseDetails={expense} />
+              <ExpensesCardCmp expenseDetails={expense} />
             </div>
           );
         })}
@@ -134,11 +140,30 @@ export class ExpensesListContainer extends Component {
         <Modal open={this.state.modalOpen} onClose={this.onCloseModal}>
           <div className={classes.paper}>
             <Typography variant="headline" id="modal-title" className={classes.text}>
-              Title
+              New Expenses
             </Typography>
             <form className={classes.container} noValidate autoComplete="off">
+              <MuiPickersUtilsProvider utils={MomentUtils}>
+                <div className={classes.margin}>
+                  <DatePickerCmp
+                    InputLabelProps={{
+                      classes: {
+                        root: classes.cssLabel,
+                        focused: classes.cssFocused
+                      }
+                    }}
+                    InputProps={{
+                      classes: {
+                        root: classes.cssOutlinedInput,
+                        focused: classes.cssFocused,
+                        notchedOutline: classes.notchedOutline
+                      }
+                    }}
+                  />
+                </div>
+              </MuiPickersUtilsProvider>
               <TextField
-                id="outlined-textarea"
+                id="food"
                 InputLabelProps={{
                   classes: {
                     root: classes.cssLabel,
@@ -150,15 +175,67 @@ export class ExpensesListContainer extends Component {
                     root: classes.cssOutlinedInput,
                     focused: classes.cssFocused,
                     notchedOutline: classes.notchedOutline
+                  },
+                  endAdornment: <InputAdornment position="end">€</InputAdornment>
+                }}
+                label="Food Cost"
+                placeholder="Food, drinks, snacks...you name it."
+                fullWidth
+                className={classes.margin}
+                onChange={input => {
+                  this.setState({ currentCost: input.target.value });
+                }}
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                id="living"
+                InputLabelProps={{
+                  classes: {
+                    root: classes.cssLabel,
+                    focused: classes.cssFocused
                   }
                 }}
-                label="xxx xxx"
-                placeholder="xxx xxx xxx xxx"
-                multiline
+                InputProps={{
+                  classes: {
+                    root: classes.cssOutlinedInput,
+                    focused: classes.cssFocused,
+                    notchedOutline: classes.notchedOutline
+                  },
+                  endAdornment: <InputAdornment position="end">€</InputAdornment>
+                }}
+                label="Living Cost"
+                placeholder="Rent, clothes, glitters...everything counts."
                 fullWidth
-                className={classes.textField}
+                className={classes.margin}
                 onChange={input => {
-                  this.setState({ currentFeedback: input.target.value });
+                  this.setState({ currentCost: input.target.value });
+                }}
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                id="transportation"
+                InputLabelProps={{
+                  classes: {
+                    root: classes.cssLabel,
+                    focused: classes.cssFocused
+                  }
+                }}
+                InputProps={{
+                  classes: {
+                    root: classes.cssOutlinedInput,
+                    focused: classes.cssFocused,
+                    notchedOutline: classes.notchedOutline
+                  },
+                  endAdornment: <InputAdornment position="end">€</InputAdornment>
+                }}
+                label="Transportation Cost"
+                placeholder="Public, private, gas...those moved you around."
+                fullWidth
+                className={classes.margin}
+                onChange={input => {
+                  this.setState({ currentCost: input.target.value });
                 }}
                 margin="normal"
                 variant="outlined"
