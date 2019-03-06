@@ -133,6 +133,7 @@ export class ExpensesListContainer extends Component {
 
   //submit the data on modal
   onSubmitModal = (datePick, foodCost, livingCost, transportCost) => {
+    const { expensesList } = this.state;
     axios
       .post('/new/expense', {
         data: {
@@ -143,7 +144,8 @@ export class ExpensesListContainer extends Component {
         }
       })
       .then(newRES => {
-        console.log(newRES);
+        console.log('newRES', newRES);
+        this.setState({ expensesList: [...expensesList, newRES.data] });
         this.onCloseModal();
       });
   };
