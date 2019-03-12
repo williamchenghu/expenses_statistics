@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import axios from 'axios';
 
 const theme = createMuiTheme({
@@ -165,6 +166,27 @@ export class ExpensesListContainer extends Component {
         <Fab aria-label="Add" onClick={this.onOpenModal} className={classes.button}>
           <AddIcon />
         </Fab>
+        <ComposedChart
+          width={600}
+          height={300}
+          data={expensesList}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="food" stackId="a" fill="#ffa18f" />
+          <Bar dataKey="living" stackId="a" fill="#ff6f61" />
+          <Bar dataKey="transport" stackId="a" fill="#c63d37" />
+          <Line type="monotone" dataKey="living" stroke="#184a45" />
+        </ComposedChart>
         <Modal open={this.state.modalOpen} onClose={this.onCloseModal}>
           <div className={classes.paper}>
             <Typography variant="headline" id="modal-title" className={classes.text}>
