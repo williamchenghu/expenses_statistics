@@ -3,17 +3,18 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import AnalysisPie from './AnalysisPie';
 
 const styles = {
   card: {
-    minWidth: 275
+    maxWidth: 400
   },
   title: {
     fontSize: 18
   }
 };
 
-export const ExpensesCardCmp = ({ expenseDetails, classes }) => {
+const ExpensesCardCmp = ({ expenseDetails, classes }) => {
   return (
     <Card className={classes.card}>
       <CardContent>
@@ -24,6 +25,7 @@ export const ExpensesCardCmp = ({ expenseDetails, classes }) => {
           <div>Transportation: {expenseDetails.transport}€</div>
         </div>
       </CardContent>
+      <AnalysisPie expense={expenseDetails} />
     </Card>
   );
 };
