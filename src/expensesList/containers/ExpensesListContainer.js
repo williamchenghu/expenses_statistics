@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
 import ExpensesCardCmp from '../components/ExpensesCard';
-import DatePickerCmp from '../components/DatePicker';
 import CompareChart from '../components/CompareChart';
-import Modal from '@material-ui/core/Modal';
+import AddCardModal from '../components/AddCardModal';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import MomentUtils from '@date-io/moment';
-import moment from 'moment';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
@@ -102,11 +94,7 @@ export class ExpensesListContainer extends Component {
     super(props);
     this.state = {
       modalOpen: false,
-      expensesList: [],
-      datePick: null,
-      foodCost: undefined,
-      livingCost: undefined,
-      transportCost: undefined
+      expensesList: []
     };
   }
 
@@ -120,39 +108,17 @@ export class ExpensesListContainer extends Component {
     });
   };
 
-  onOpenModal = () => {
-    this.setState({ modalOpen: true });
-  };
+  onModalChange = status => this.setState({ modalOpen: status });
 
-  onCloseModal = () => {
+  onSubmit = newRES => {
+    const { expensesList } = this.state;
+    console.log('newRES', newRES);
+    this.setState({ expensesList: [...expensesList, newRES.data] });
     this.setState({ modalOpen: false });
   };
 
-  onChangeDate = selectedDate => {
-    this.setState({ datePick: selectedDate });
-  };
-
-  //submit the data on modal
-  onSubmitModal = (datePick, foodCost, livingCost, transportCost) => {
-    const { expensesList } = this.state;
-    axios
-      .post('/new/expense', {
-        data: {
-          date: moment(datePick).format('YYYY-MM-DD (ddd)'),
-          food: Number(foodCost),
-          living: Number(livingCost),
-          transport: Number(transportCost)
-        }
-      })
-      .then(newRES => {
-        console.log('newRES', newRES);
-        this.setState({ expensesList: [...expensesList, newRES.data] });
-        this.onCloseModal();
-      });
-  };
-
   render() {
-    let { expensesList, foodCost, livingCost, transportCost, datePick } = this.state;
+    let { expensesList } = this.state;
     const { classes } = this.props;
     return (
       <div className={classes.text}>
@@ -164,127 +130,16 @@ export class ExpensesListContainer extends Component {
           );
         })}
         <CompareChart expenses={expensesList} />
-        <Fab aria-label="Add" onClick={this.onOpenModal} className={classes.button}>
+        <Fab aria-label="Add" onClick={() => this.onModalChange(true)} className={classes.button}>
           <AddIcon />
         </Fab>
-        <Modal open={this.state.modalOpen} onClose={this.onCloseModal}>
-          <div className={classes.paper}>
-            <Typography variant="headline" id="modal-title" className={classes.text}>
-              New Expenses
-            </Typography>
-            <form className={classes.container} noValidate autoComplete="off">
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                <div className={classes.margin}>
-                  <DatePickerCmp
-                    selectedDate={datePick}
-                    changeDate={this.onChangeDate}
-                    // InputLabelProps={{
-                    //   classes: {
-                    //     root: classes.cssLabel,
-                    //     focused: classes.cssFocused
-                    //   }
-                    // }}
-                    // InputProps={{
-                    //   classes: {
-                    //     root: classes.cssOutlinedInput,
-                    //     focused: classes.cssFocused,
-                    //     notchedOutline: classes.notchedOutline
-                    //   }
-                    // }}
-                  />
-                </div>
-              </MuiPickersUtilsProvider>
-              <TextField
-                id="food"
-                InputLabelProps={{
-                  classes: {
-                    root: classes.cssLabel,
-                    focused: classes.cssFocused
-                  }
-                }}
-                InputProps={{
-                  classes: {
-                    root: classes.cssOutlinedInput,
-                    focused: classes.cssFocused,
-                    notchedOutline: classes.notchedOutline
-                  },
-                  endAdornment: <InputAdornment position="end">€</InputAdornment>
-                }}
-                label="Food Cost"
-                placeholder="Food, drinks, snacks...you name it."
-                fullWidth
-                className={classes.margin}
-                onChange={input => {
-                  this.setState({ foodCost: input.target.value });
-                }}
-                margin="normal"
-                variant="outlined"
-                type="number"
-              />
-              <TextField
-                id="living"
-                InputLabelProps={{
-                  classes: {
-                    root: classes.cssLabel,
-                    focused: classes.cssFocused
-                  }
-                }}
-                InputProps={{
-                  classes: {
-                    root: classes.cssOutlinedInput,
-                    focused: classes.cssFocused,
-                    notchedOutline: classes.notchedOutline
-                  },
-                  endAdornment: <InputAdornment position="end">€</InputAdornment>
-                }}
-                label="Living Cost"
-                placeholder="Rent, clothes, glitters...everything counts."
-                fullWidth
-                className={classes.margin}
-                onChange={input => {
-                  this.setState({ livingCost: input.target.value });
-                }}
-                margin="normal"
-                variant="outlined"
-                type="number"
-              />
-              <TextField
-                id="transportation"
-                InputLabelProps={{
-                  classes: {
-                    root: classes.cssLabel,
-                    focused: classes.cssFocused
-                  }
-                }}
-                InputProps={{
-                  classes: {
-                    root: classes.cssOutlinedInput,
-                    focused: classes.cssFocused,
-                    notchedOutline: classes.notchedOutline
-                  },
-                  endAdornment: <InputAdornment position="end">€</InputAdornment>
-                }}
-                label="Transportation Cost"
-                placeholder="Public, private, gas...those moved you around."
-                fullWidth
-                className={classes.margin}
-                onChange={input => {
-                  this.setState({ transportCost: input.target.value });
-                }}
-                margin="normal"
-                variant="outlined"
-                type="number"
-              />
-            </form>
-            <Button
-              variant="contained"
-              className={classes.button}
-              onClick={() => this.onSubmitModal(datePick, foodCost, livingCost, transportCost)}
-            >
-              Add
-            </Button>
-          </div>
-        </Modal>
+        <AddCardModal
+          modalState={this.state.modalOpen}
+          modalClose={() => this.onModalChange(false)}
+          expenses={expensesList}
+          onSubmit={this.onSubmit}
+          classes={classes}
+        />
       </div>
     );
   }
